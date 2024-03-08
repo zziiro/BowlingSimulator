@@ -1,0 +1,6 @@
+B:\Visual Studio 2022 package\Projects\BowlingSimBrechbuhler\BowlingSimBrechbuhler\obj\Debug\net8.0-windows\BowlingSimBrechbuhler.bowlingSimulatorForm.resources
+B:\Visual Studio 2022 package\Projects\BowlingSimBrechbuhler\BowlingSimBrechbuhler\obj\Debug\net8.0-windows\BowlingSimBrechbuhler.csproj.GenerateResource.cache
+B:\Visual Studio 2022 package\Projects\BowlingSimBrechbuhler\BowlingSimBrechbuhler\obj\Debug\net8.0-windows\BowlingSimBrechbuhler.GeneratedMSBuildEditorConfig.editorconfig
+B:\Visual Studio 2022 package\Projects\BowlingSimBrechbuhler\BowlingSimBrechbuhler\obj\Debug\net8.0-windows\BowlingSimBrechbuhler.AssemblyInfoInputs.cache
+B:\Visual Studio 2022 package\Projects\BowlingSimBrechbuhler\BowlingSimBrechbuhler\obj\Debug\net8.0-windows\BowlingSimBrechbuhler.AssemblyInfo.cs
+B:\Visual Studio 2022 package\Projects\BowlingSimBrechbuhler\BowlingSimBrechbuhler\obj\Debug\net8.0-windows\BowlingSimBrechbuhler.csproj.CoreCompileInputs.cache
