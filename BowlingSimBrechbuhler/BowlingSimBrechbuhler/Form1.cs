@@ -12,11 +12,33 @@ namespace BowlingSimBrechbuhler
 
         private void bowlButton(object sender, EventArgs e)
         {
+
+            // check gameover condition
+            if (frameCounter > maxFrames || frameCounter == maxFrames)
+            {
+                // set conditions for the gameover event
+                this.finalScoreLabel.Visible = true;
+                this.finalScoreLabel.Text = "Game Over! " + '\n' + "You're final score is: " + totalScore();
+                this.playAgainBtn.Visible = true;
+                this.saveScoreBtn.Visible = true;
+                this.bowlBtn.Visible = false;
+                this.cheaterBtn.Visible = false;
+                this.zeroBtn.Visible = false;
+            }
+
+
             // how many pins the player hit
-            int pinsHit = rand.Next(minPinsHit, maxPinsHit+1);
+            int pinsHit = rand.Next(minPinsHit, maxPinsHit + 1);
+            previousPinsHit = pinsHit;
+
+            if(turnPerFrameCounter == 1)
+            {
+                pinsHit = rand.Next(minPinsHit, previousPinsHit + 1);
+            }
 
             // calculate score and increment turnPerFrameCounter
             saveScore(pinsHit);
+            finalScore+=scores[scores.Count-1];
             turnPerFrameCounter++;
 
             // check if the first bowl thrown was a strike
@@ -32,16 +54,6 @@ namespace BowlingSimBrechbuhler
                 maxFrames=11;
             }
 
-            // check gameover condition
-            if(frameCounter == maxFrames)
-            {
-                // set conditions for the gameover event
-                this.finalScoreLabel.Text = "Game Over! " + '\n' + "You're final score is: " + totalScore();
-                this.playAgainBtn.Visible = true;
-                this.bowlBtn.Visible = false;
-                this.cheaterBtn.Visible = false;
-                this.zeroBtn.Visible = false;
-            }
 
             // update UI Information
             updateInformationNoFrameCounter(pinsHit, turnPerFrameCounter);
@@ -49,10 +61,13 @@ namespace BowlingSimBrechbuhler
             // if 2 balls have been bowled
             if (turnPerFrameCounter == 2)
             {
+                // update and reset variables back to 0
                 frameCounter++;
                 turnPerFrameCounter = 0;
+                maxPinsHit = 10;
+                previousPinsHit = 0;
                 updateInformationFrameCounter(frameCounter);
-                this.totalScoreLabel.Text = "Total Score: " + totalScore();
+                this.totalScoreLabel.Text = "Current Score: " + finalScore;
                 this.endOfFrameLabel.Text = "End of Frame: " + frameCounter.ToString();
             }
         }
@@ -65,20 +80,22 @@ namespace BowlingSimBrechbuhler
 
             // increment frameCounter and turnPerFrameCounter;
             frameCounter++;
+            
 
             // check if 10th frame strike
             if (frameCounter == maxFrames && pinsHit == maxPinsHit)
             {
-                maxFrames = 11;
+                maxFrames=11;
             }
 
             // check gameover condition
-            if (frameCounter == maxFrames)
+            if (frameCounter > maxFrames || frameCounter == maxFrames)
             {
                 // set conditions for the gameover event
                 this.finalScoreLabel.Visible = true;
                 this.finalScoreLabel.Text = "Game Over! " + '\n' + "You're final score is: " + totalScore();
                 this.playAgainBtn.Visible = true;
+                this.saveScoreBtn.Visible = true;
                 this.bowlBtn.Visible = false;
                 this.cheaterBtn.Visible = false;
                 this.zeroBtn.Visible = false;
@@ -87,7 +104,7 @@ namespace BowlingSimBrechbuhler
             // update UI information
             updateInformationNoFrameCounter(pinsHit, turnPerFrameCounter);
             updateInformationFrameCounter(frameCounter);
-            this.totalScoreLabel.Text = "Total Score: " + totalScore();
+            this.totalScoreLabel.Text = "Current Score: " + totalScore();
             this.endOfFrameLabel.Text = "End of Frame: " + frameCounter.ToString();
         }
 
@@ -102,12 +119,13 @@ namespace BowlingSimBrechbuhler
             turnPerFrameCounter++;
 
             // check gameover condition
-            if (frameCounter == maxFrames)
+            if (frameCounter > maxFrames || frameCounter == maxFrames)
             {
                 // set conditions for the gameover event
                 this.finalScoreLabel.Visible = true;
                 this.finalScoreLabel.Text = "Game Over! " + '\n' + "You're final score is: " + totalScore();
                 this.playAgainBtn.Visible = true;
+                this.saveScoreBtn.Visible = true;
                 this.bowlBtn.Visible = false;
                 this.cheaterBtn.Visible = false;
                 this.zeroBtn.Visible = false;
@@ -122,7 +140,7 @@ namespace BowlingSimBrechbuhler
                 frameCounter++;
                 turnPerFrameCounter = 0;
                 updateInformationFrameCounter(frameCounter);
-                this.totalScoreLabel.Text = "Total Score: " + totalScore();
+                this.totalScoreLabel.Text = "Current Score: " + totalScore();
             }
         }
 
@@ -138,6 +156,10 @@ namespace BowlingSimBrechbuhler
             turnPerFrameCounter = 0;
             frameCounter = 0;
             maxFrames = 10;
+            finalScore= 0;
+
+            // clear heap for stack overflow errors
+            GC.Collect();
 
             // set the labels back to deafault
             this.frameLabel.Text = "Frames: ";
@@ -145,14 +167,50 @@ namespace BowlingSimBrechbuhler
             this.scoreLabel.Text = "Pins Hit:";
             this.displayLabel.Text = "";
 
-            // hid button and final score label
+            // hide button and final score label
             this.finalScoreLabel.Visible = false;
             this.playAgainBtn.Visible = false;
+            this.saveScoreBtn.Visible = false;
 
             // make other buttons visible again
             this.bowlBtn.Visible = true;
             this.cheaterBtn.Visible = true;
             this.zeroBtn.Visible = true;
+        }
+
+        // save score button
+        public void saveScoreButton(object sender, EventArgs e)
+        {
+            try
+            {
+                // cwd
+                string filename = "scores.txt";
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), filename);
+
+                // check if file already exists
+                if (!File.Exists(filePath))
+                {
+                    using(FileStream fs = File.Create(filePath))
+                    {
+                        using(StreamWriter writer = new StreamWriter(filename))
+                        {
+                            writer.WriteLine(finalScore.ToString());
+                        }
+                    }
+                }
+                // if file exists
+                using(StreamWriter writer = new StreamWriter("scores.txt"))
+                {
+                    // write score to file
+                    writer.WriteLine(finalScore.ToString());
+                }
+            }catch(Exception ex)
+            {
+                Console.WriteLine("Error attempting to save file..");
+                Console.WriteLine("[ERROR] - " + ex.ToString());
+            }
+
+            this.saveScoreBtn.Visible = false;
         }
 
         // calculate scores
@@ -167,12 +225,11 @@ namespace BowlingSimBrechbuhler
         // calculate total score
         private int totalScore()
         {
-            int totalScore = 0;
-            foreach(int n in scores)
-            {
-                totalScore += n;
-            }
-            return totalScore;
+            int scoresSize = scores.Count-1;
+            
+            finalScore+=scores[scoresSize];
+            
+            return finalScore;
         }
 
         // update on screen pinsHit label and turnPerFrameLabel

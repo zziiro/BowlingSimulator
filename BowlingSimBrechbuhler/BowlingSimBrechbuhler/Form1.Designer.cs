@@ -1,4 +1,6 @@
-﻿namespace BowlingSimBrechbuhler
+﻿using System.Transactions;
+
+namespace BowlingSimBrechbuhler
 {
     partial class bowlingSimulatorForm
     {
@@ -16,6 +18,9 @@
         private int maxPinsHit = 10;
         private int minPinsHit = 0;
         private int maxFrames = 10;
+        private int finalScore = 0;
+        private int score = 0;
+        private int previousPinsHit = 0;
         Random rand = new Random();
         private List<int> scores = new List<int>();
 
@@ -42,6 +47,7 @@
             endOfFrameLabel = new Label();
             finalScoreLabel = new Label();
             playAgainBtn = new Button();
+            saveScoreBtn = new Button();
             SuspendLayout();
             // 
             // bowlBtn
@@ -82,7 +88,7 @@
             frameLabel.AutoSize = true;
             frameLabel.Location = new Point(25, 50);
             frameLabel.Name = "frameLabel";
-            frameLabel.Size = new Size(67, 15);
+            frameLabel.Size = new Size(46, 15);
             frameLabel.TabIndex = 3;
             frameLabel.Text = "Frame: ";
             // 
@@ -160,7 +166,20 @@
             playAgainBtn.UseMnemonic = false;
             playAgainBtn.UseVisualStyleBackColor = true;
             playAgainBtn.Visible = false;
-            playAgainBtn.Click += playAgainButton;
+            playAgainBtn.Click += this.playAgainButton;
+            // 
+            // saveScoreBtn
+            // 
+            saveScoreBtn.Location = new Point(209, 415);
+            saveScoreBtn.Name = "saveScoreBtn";
+            saveScoreBtn.Size = new Size(75, 50);
+            saveScoreBtn.TabIndex = 14;
+            saveScoreBtn.Text = "Save Score!";
+            saveScoreBtn.UseMnemonic = false;
+            saveScoreBtn.UseVisualStyleBackColor = true;
+            saveScoreBtn.Visible = false;
+            saveScoreBtn.Visible = false;
+            saveScoreBtn.Click += this.saveScoreButton;
             // 
             // bowlingSimulatorForm
             // 
@@ -168,6 +187,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Info;
             ClientSize = new Size(784, 561);
+            Controls.Add(saveScoreBtn);
             Controls.Add(playAgainBtn);
             Controls.Add(finalScoreLabel);
             Controls.Add(endOfFrameLabel);
@@ -192,5 +212,6 @@
         private Label endOfFrameLabel;
         private Label finalScoreLabel;
         private Button playAgainBtn;
+        private Button saveScoreBtn;
     }
 }
