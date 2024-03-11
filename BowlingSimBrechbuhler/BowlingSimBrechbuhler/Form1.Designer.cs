@@ -18,8 +18,7 @@ namespace BowlingSimBrechbuhler
         private int maxPinsHit = 10;
         private int minPinsHit = 0;
         private int maxFrames = 10;
-        private int finalScore = 0;
-        private int score = 0;
+        private int finalScore = 0; 
         private int previousPinsHit = 0;
         Random rand = new Random();
         private List<int> scores = new List<int>();
