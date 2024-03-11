@@ -103,7 +103,7 @@ namespace BowlingSimBrechbuhler
             updateInformationNoFrameCounter(pinsHit, turnPerFrameCounter);
             updateInformationFrameCounter(frameCounter);
             this.totalScoreLabel.Text = "Current Score: " + (totalScore() - scores[scores.Count - 1]);
-            this.scoreLabel.Text += " | ";
+            this.scoreLabel.Text += " - ";
             this.endOfFrameLabel.Text = "End of Frame: " + frameCounter.ToString();
         }
 
@@ -196,7 +196,9 @@ namespace BowlingSimBrechbuhler
                     {
                         using(StreamWriter writer = new StreamWriter(filename))
                         {
-                            writer.WriteLine(finalScore.ToString());
+                            // write to newly created file
+                            int correctedScore = finalScore - (scores[scores.Count-1]);
+                            writer.WriteLine(correctedScore.ToString());
                         }
                     }
                 }
@@ -205,7 +207,8 @@ namespace BowlingSimBrechbuhler
                 using(StreamWriter writer = new StreamWriter("scores.txt"))
                 {
                     // write score to file
-                    writer.WriteLine(finalScore.ToString());
+                    int correctedScore = finalScore - (scores[scores.Count - 1]);
+                    writer.WriteLine(correctedScore.ToString());
                 }
             }catch(Exception ex)
             {
@@ -244,7 +247,7 @@ namespace BowlingSimBrechbuhler
             this.turnPerFrameLabel.Text += turnPerFrameCounter + " | ";
             if(turnPerFrameCounter == 2)
             {
-                this.scoreLabel.Text += " | ";
+                this.scoreLabel.Text += " - ";
             }
         }
 
